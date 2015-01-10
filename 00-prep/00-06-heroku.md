@@ -1,6 +1,8 @@
 Creating an Node.js + Express App With Heroku
 ====
 
+(SoBA team, you may skip this section)
+
 [Heroku](https://www.heroku.com/) is a cloud application platform that makes it easy for developers to deploy their web applications to the public internet. Heroku manages servers and other resources so that developers can focus on writing code rather than maintaining hardware and internet systems.
 
 # References
