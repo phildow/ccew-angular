@@ -15,7 +15,7 @@ GitHub instructions for forking and cloning a repo.
 
 This will come in handy for future lessons.
 
-[Generating SSH Keys]([https://help.github.com/articles/generating-ssh-keys](https://help.github.com/articles/generating-ssh-keys))
+[Generating SSH Keys](https://help.github.com/articles/generating-ssh-keys)
 
 GitHub instructions for setting up SSH keys to work with GitHub. 
 
