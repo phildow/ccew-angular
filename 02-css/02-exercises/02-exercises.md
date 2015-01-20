@@ -25,7 +25,7 @@ Fantastic little reference book for css and not that expensive.
 
 ## Git Workflow
 
-Make sure you've first synced any changes to your local account.
+Make sure you've first synced any changes to your local account. If you haven't set your upstream repository yet or aren't sure how to sync, see the full instructions at the end of this assignment.
 
 This lesson is great chance to get into the habit of branching in git, making your changes, and then merging back into your master branch.
 
@@ -94,3 +94,93 @@ Don't worry about all the bells and whistles. Focus on turning that vertical uno
 **Assignment 4**
 
 In columns.html you will set up a page with a navbar, sidebar, main content area and footer. You will be setting element sizes and uses floats and clears to place elements correctly on the page. This may be frustrating, but it highlights the difficulties twitter bootstrap helps us overcome, which we'll be learning about in our next lesson.
+
+## Syncing the Repo
+
+If you forked this repo earlier to your account and then cloned it to your computer you will now need to sync it to get up to date with the latest additions, including the homework assignment. This involves associating another remote repository with your local copy, *pulling* its changes to your computer and then *merging* those changes with your master branch.
+
+In the command line, `cd` into the directory where you cloned the ccew-angular repository originally:
+
+```
+$ cd path/to/ccew-angular
+$ ls
+00-prep		01-html		02-css			README.md
+```
+
+Make sure you're executing the following commands from the root directory for this repository and not one of the lesson or exercise directories.
+
+Before syncing, make sure you've merged all the changes to your assignment from any branches you were on for the previous assignment, commited then, and that you are on the master branch. Check your branch and status with git. They should be:
+
+```
+$ git status
+On branch master
+nothing to commit, working directory clean
+```
+
+Let's sync. First check to see if you've already associated the ccew-angular repository on my github account as a remote upstream repo:
+
+```
+$ git remote -v
+origin	https://github.com/student/ccew-angular.git (fetch)
+origin	https://github.com/student/ccew-angular.git (push)
+```
+
+Notice that I only have `origin` listed here, one each for fetching and pushing (getting the code from your repo on github and sending it back to it). Your origin will point to the repository on your account. I've used "student" here.
+
+We'll be adding `upstream`. If you already have upstream and it points to my ccew-angular repo, you can skip this step. Otherwise, add the original repository on my account as an upstream remote repo:
+
+```
+$ git remote add upstream https://github.com/phildow/ccew-angular.git
+```
+
+You should now see fetch and push remote repositories for `origin` as well as `upstream`:
+
+```
+$ git remote -v
+origin   https://github.com/student/ccew-angular.git (fetch)
+origin   https://github.com/student/ccew-angular.git (push)
+upstream https://github.com/phildow/ccew-angular.git (fetch)
+upstream https://github.com/phildow/ccew-angular.git (push)
+```
+
+Notice that the origins point to your github account and the upstreams point to my github account.
+
+We're now ready to sync. Fetch the changes from my account. We can refer to remote repositories by name:
+
+```
+$ git fetch upstream
+```
+
+Switch to your master branch if you aren't already there:
+
+```
+$ git checkout master
+```
+
+And merge the changes you just fetched from my account, which have been put on the "upstream/master" branch:
+
+```
+$ git merge upstream/master
+```
+
+That's it. You should now see the bootstrap lesson material and have access to the exercises on your machine:
+
+```
+$ ls
+00-prep
+01-html
+02-css	
+03-twitter-bootstrap
+04-javascript
+README.md
+```
+
+For additional help, full instructions for forking, cloning and syncing may be found at:
+
+[Forking a Repo](https://github.com/phildow/ccew-angular/blob/master/01-html/01-exercises/01-exercises.md)
+
+GitHub instructions for forking and cloning a repo.
+
+[Sycning a Fork](https://help.github.com/articles/syncing-a-fork/) 
+
+GitHub instructions for syncing a repo you've already forked and cloned.
