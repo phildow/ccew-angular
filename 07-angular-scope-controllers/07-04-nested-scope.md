@@ -147,4 +147,6 @@ Second, design ahead and be aware of the scopes that angular creates for you. Re
 
 Controllers help us organize our code into groups of data and behavior that are local to sections of a webpage. We will expose data and functionality on a controller's $scope object, and elements of the page that are under the control of that controller will have access to them. We ensure this with the ngController directive. Doing so strictly limits what information parts of our webpage have acccess to and helps us write modular code, maintainable code.
 
-We can nest controllers in our views, which leads to nested scopes. Scopes deeper down in the dom hierarchy prototyipcally inherit from their parents. Most of the time we'll get the expected behavior but we must be aware that prototypical inheritance is different from class-based inheritance so that we can recognize unexpected behavior that is caused by it. 
+We can nest controllers in our views, which leads to nested scopes. Scopes deeper down in the dom hierarchy prototyipcally inherit from their parents. Most of the time we'll get the expected behavior but we must be aware that prototypical inheritance is different from class-based inheritance so that we can recognize unexpected behavior that is caused by it.
+
+When you create a controller for your application be sure that you define it on the application module and that you include the $scope parameter in the constructor function if you intend to make data and behavior available to the view.
