@@ -182,6 +182,6 @@ This class of directives binds to events instead of model data, and their associ
 
 ## Angular Templates
 
-HTML, directives, expressions and filters altogether make up angular's template language. Together they are the View in the Model-View-Controller (MVC) design pattern, and I will typically refer to an angular html page as the "view" in future lessons.
+HTML, directives, expressions and filters altogether make up angular's template language. Together they are the View in the Model-View-Controller (MVC) design pattern, and I will typically refer to an angular html page as the "view" in future lessons and parts of the page under the control of controllers as "views".
 
 Angular views are connected to the model by way of the `$scope` object, which we've so far made a number of references to but haven't really discussed. In our next lesson we'll learn about scope and about angular Controllers, whose responsibility is to expose model data to the view by way of the scope, strictly limiting what data the view has access to. We'll see that controllers will also expose the functions that are called when we use directives to bind to user generated events.
