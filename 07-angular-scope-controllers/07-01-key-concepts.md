@@ -63,7 +63,7 @@ Dependency injection is not specific to angular. It is a framework level design 
 
 ## Directives and Views
 
-We've already seen how directives and views work in angular. When we talk about views we are just talking about our web page, so plain old html, but with all of the angular expressions and directives included in it.
+We've already seen how directives and views work in angular. When we talk about views we are just talking about our web page or parts of our web page, so plain old html, but with all of the angular expressions and directives included in it.
 
 Parts of a view will come under the management of controllers, which will stricly control what model data and behavior the view has access to by way of the scope. Views will render model data to the user and communicate events back to the controller so that our custom javascript can handle them.
 

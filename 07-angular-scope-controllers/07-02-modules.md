@@ -1,7 +1,7 @@
 Angular Modules
 ======
 
-All application code in angular belongs to a module. Application module's don't actually provide any functionality. They just group code under what you can think of as a namespace.
+All application code in angular belongs to a module. Application module's don't actually provide any functionality. They just group code.
 
 We'll learn that, in addition to controllers, we can also create services, providers, our own directives and filters, and other constructs. All of these will be created as part of a module.
 
