@@ -50,6 +50,17 @@ var posts = [
 
 var router = express.Router();
 
+router.get('/api/v1/posts/search', function(req, res) {
+  var text = req.query.text;
+  var regex = new RegExp(text, 'i');
+  var results = posts.filter(function(el) { 
+    return  regex.test(el.author)  ||    
+            regex.test(el.title)   ||
+            regex.test(el.content) ;
+  });
+  res.json(results);
+});
+
 router.get('/api/v1/posts', function(req, res) {
   res.json(posts);
 });
@@ -64,7 +75,7 @@ router.post('/api/v1/posts', function(req, res) {
 router.get('/api/v1/posts/:id', function(req, res) {
   var matches = posts.filter(function(el) { return el._id == req.params.id; });
   if (matches.length == 0) {
-    res.status(404);
+    res.status(404).json({err:404});
   } else {
     res.json(matches[0]);
   }
@@ -78,7 +89,7 @@ router.put('/api/v1/posts/:id', function(req, res) {
     }
   }
   if (index == -1) {
-    res.status(404);
+    res.status(404).json({err:404});
   } else {
     posts[index] = req.body;
     res.json(posts[index]);
@@ -96,7 +107,6 @@ router.delete('/api/v1/posts/:id', function(req, res) {
 });
 
 app.use(router);
-
 
 
 // catch 404 and forward to error handler
