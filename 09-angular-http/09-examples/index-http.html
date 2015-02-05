@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Posts</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+    <div class="container">
+
+      <section id="new" ng-controller="newController">
+        <p><a href="#" ng-click="toggleForm()">Create a new post</a></p>
+
+        <form ng-show="formVisible" ng-submit="createPost(post)">
+          <div class="form-group">
+            <label for="title">Post Title</label>
+            <input type="text" class="form-control" id="title" ng-model="post.title" placeholder="Enter title">
+          </div>
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" class="form-control" id="author" ng-model="post.author" placeholder="Author">
+          </div>
+          <div class="form-group">
+            <label for="content">Content</label>
+            <textarea rows="5" class="form-control" id="content" ng-model="post.content" placeholder="Content"></textarea>
+          </div>
+          <button type="submit" class="btn btn-default">Create Post</button>
+        </form>
+        <hr>
+      </section>
+
+      <section id="list" ng-controller="listController">
+
+        <h1>Posts</h1>
+
+        <div ng-repeat="post in posts">
+          <span class="pull-right"><a href="#" ng-click="deletePost(post)">Delete</a></span>
+          <h3><a href="#" ng-click="viewPost(post)">{{post.title}}</a></h3>
+          <p>{{post.author}}</p>
+        </div>
+
+      </section>
+
+      <section id="item" ng-controller="itemController" ng-show="post">
+        <hr>
+        <h3>{{post.title}}</h3>
+        <p>By {{post.author}}</p>
+        <p>{{post.content}}</p>
+      </section>
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+
+    <script src="js/angular.min.js"></script>
+
+    <script type="text/javascript">
+
+      angular.module('myApp', []);
+
+      angular.module('myApp').controller('newController', 
+        ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+
+        $scope.post = {};
+        $scope.formVisible = false;
+
+        $scope.toggleForm = function() {
+          $scope.formVisible = !$scope.formVisible;
+        };
+
+        $scope.createPost = function(post) {
+          $http.post('/api/v1/posts', post).then(
+            function(response) {
+              $rootScope.$broadcast('post:created');
+            }, 
+            function(error) {
+              console.log(error);
+            });
+        };
+
+      }]);
+
+      angular.module('myApp').controller('listController', 
+        ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+
+        $scope.$on('post:created', function(evt) {
+          $scope.refresh();
+        });
+
+        $scope.refresh = function() {
+          $http.get('/api/v1/posts').then(
+            function(response) {
+              $scope.posts = response.data;
+            },
+            function(error) {
+              console.log(error);
+            });
+        };
+
+        $scope.viewPost = function(post) {
+          $rootScope.$broadcast('post:selected', post._id);
+        };
+
+        $scope.deletePost = function(post) {
+          var postId = post._id;
+          $http.delete( ['/api/v1/posts',postId].join('/') ).then(
+            function(response) {
+              $scope.refresh();
+            },
+            function(error){
+              console.log(error);
+            });
+        };
+
+        $scope.refresh();
+
+      }]);
+
+      angular.module('myApp').controller('itemController', 
+        ['$scope', '$http', function($scope, $http) {
+        
+        $scope.$on('post:selected', function(evt, postId) {
+          $http.get( ['/api/v1/posts',postId].join('/') ).then(
+            function(response) {
+              $scope.post = response.data;
+            },
+            function(error) {
+              console.log(error);
+            });
+        });
+
+      }]);
+
+    </script>
+  </body>
+</html>
