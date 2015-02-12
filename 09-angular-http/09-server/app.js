@@ -84,7 +84,7 @@ router.get('/api/v1/posts/:id', function(req, res) {
 router.put('/api/v1/posts/:id', function(req, res) {
   var index = -1;
   for ( var i = 0; i < posts.length; i++ ) {
-    if (posts[i]._id == req.params.id); {
+    if (posts[i]._id == req.params.id) {
       index = i; break;
     }
   }
