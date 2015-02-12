@@ -1,0 +1,18 @@
+
+<section id="new">        
+  <form ng-show="formVisible" ng-submit="createPost(post)">
+    <div class="form-group">
+      <label for="title">Post Title</label>
+      <input type="text" class="form-control" id="title" ng-model="post.title" placeholder="Enter title">
+    </div>
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" class="form-control" id="author" ng-model="post.author" placeholder="Author">
+    </div>
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea rows="5" class="form-control" id="content" ng-model="post.content" placeholder="Content"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default">Create Post</button>
+  </form>
+</section>

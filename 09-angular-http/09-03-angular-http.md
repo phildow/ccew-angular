@@ -183,7 +183,7 @@ Finally let's retrieve the item with that using that postId value. Include the $
 
 ```js
 $scope.$on('post:selected', function(evt, postId) {
-  $http.get( ['/api/v1/posts',postId].joins('/') ).then(
+  $http.get( ['/api/v1/posts',postId].join('/') ).then(
     function(response) {
       console.log(response);
     },

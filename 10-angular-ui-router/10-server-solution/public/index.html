@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Posts</title>
+    <base href="/">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            My Application
+          </a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li ui-sref-active="active"><a ui-sref="posts">Posts</a></li>
+            <li><a href>Media</a></li>
+            <li><a href>About</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container">  
+      <div ui-view></div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular-resource.min.js"></script>
+    <script src="js/lib/angular-ui-router.min.js"></script>
+
+    <script type="text/javascript">
+
+      angular.module('myApp', [
+        'ngResource',
+        'ui.router'
+      ]);
+
+      angular.module('myApp').factory('Post', ['$resource', function($resource) {
+        return $resource('/api/v1/posts/:id', {
+          id: '@_id'
+        }, {
+          update: {
+            method: 'PUT'
+          }
+        });
+      }])
+
+      angular.module('myApp').controller('listController', 
+        ['$scope', '$rootScope', 'posts', 'Post', function($scope, $rootScope, posts, Post) {
+        
+        $scope.posts = posts;
+
+        $scope.refresh = function() {
+          $scope.posts = Post.query();
+        };
+
+        $scope.viewPost = function(post) {
+          $rootScope.$broadcast('post:selected', post._id);
+        };
+
+        $scope.deletePost = function(post) {
+          Post.remove({id: post._id}, null, $scope.refresh);
+        };
+
+        $scope.$on('post:created', function(evt) {
+          $scope.refresh();
+        });
+      }]);
+
+      angular.module('myApp').controller('itemController', 
+        ['$scope', 'post', function($scope, post) {
+        
+        $scope.post = post;
+      }]);
+
+      angular.module('myApp').controller('newController', 
+        ['$scope', 'Post', '$rootScope', function($scope, Post, $rootScope) {
+
+        $scope.post = {};
+        $scope.formVisible = false;
+
+        $scope.toggleForm = function() {
+          $scope.formVisible = !$scope.formVisible;
+        };
+
+        $scope.createPost = function(post) {
+          Post.save(null, post, function() {
+            $rootScope.$broadcast('post:created');
+          });
+        };
+
+      }]);
+
+      angular.module('myApp').config(
+        ['$stateProvider', '$urlRouterProvider', '$locationProvider',
+        function ($stateProvider, $urlRouterProvider, $locationProvider) {
+
+        $stateProvider
+          .state('posts', {
+            url: '/posts',
+            controller: 'listController',
+            templateUrl: 'partials/posts.html',
+            resolve: {
+              posts: ['Post', function(Post) {
+                return Post.query().$promise;
+              }]
+            }
+          })
+          .state('posts.item', {
+            url: '/:id',
+            controller: 'itemController',
+            templateUrl: 'partials/post-item.html',
+            resolve: {
+              post: ['$stateParams', 'Post', function($stateParams, Post) {
+                console.log($stateParams);
+                return Post.get({id: $stateParams.id}).$promise;
+              }]
+            }
+          });
+
+        $locationProvider.html5Mode(true);
+
+      }]);
+
+    </script>
+  </body>
+</html>
